@@ -31,7 +31,7 @@ public class Snake extends GameObject {
 	@Override
 	void update(Graphics g) {
 		if (eat(snakeFrame.food)) {
-			nodes.add(0, snakeFrame.food);
+			nodes.add(0, new Node(snakeFrame.food.x, snakeFrame.food.y));
 			//snakeFrame.gameObjects.remove(snakeFrame.food);
 			snakeFrame.generateFood();
 		} else {
@@ -44,13 +44,13 @@ public class Snake extends GameObject {
 			return false;
 		}
 		Node head = nodes.get(0);
-		if (dir == Direction.LEFT && (food.x == head.x - Node.SIDE_LENGTH || food.x == (SnakeFrame.WIDTH - 1) * Node.SIDE_LENGTH) && head.x == 0) {
+		if (dir == Direction.LEFT && (food.x == head.x - Node.SIDE_LENGTH || food.x == (SnakeFrame.WIDTH - 1) * Node.SIDE_LENGTH && head.x == 0) && food.y == head.y) {
 			return true;
-		} else if (dir == Direction.UP && (food.y == head.y - Node.SIDE_LENGTH || food.y == (SnakeFrame.HEIGHT - 1) * Node.SIDE_LENGTH) && head.y == 0) {
+		} else if (dir == Direction.UP && (food.y == head.y - Node.SIDE_LENGTH || food.y == (SnakeFrame.HEIGHT - 1) * Node.SIDE_LENGTH && head.y == 0) && food.x == head.x) {
 			return true;
-		} else if (dir == Direction.RIGHT && (food.x == head.x + Node.SIDE_LENGTH || food.x == 0 && head.x == (SnakeFrame.WIDTH - 1) * Node.SIDE_LENGTH)) {
+		} else if (dir == Direction.RIGHT && (food.x == head.x + Node.SIDE_LENGTH || food.x == 0 && head.x == (SnakeFrame.WIDTH - 1) * Node.SIDE_LENGTH) && food.y == head.y) {
 			return true;
-		} else if (dir == Direction.DOWN && (food.y == head.y + Node.SIDE_LENGTH || food.y == 0 && head.y == (SnakeFrame.HEIGHT - 1) * Node.SIDE_LENGTH)) {
+		} else if (dir == Direction.DOWN && (food.y == head.y + Node.SIDE_LENGTH || food.y == 0 && head.y == (SnakeFrame.HEIGHT - 1) * Node.SIDE_LENGTH) && food.x == head.x) {
 			return true;
 		}
 		return false;

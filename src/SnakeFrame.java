@@ -56,15 +56,22 @@ public class SnakeFrame extends Frame {
 		g.setColor(Color.GREEN);
 		g.fillRect(0, 0, WIDTH * Node.SIDE_LENGTH, HEIGHT * Node.SIDE_LENGTH);
 		g.setColor(c);
+		
+		drawAllGameObjects(g);
+	}
+	
+	private void drawAllGameObjects(Graphics g) {
 		for (GameObject gameObject : gameObjects) {
 			gameObject.paint(g);
 		}
-		
+		if (food != null) {
+			food.paint(g);
+		}
 	}
 	
 	private void initGameObjects() {
 		gameObjects.add(snake);
-		//generateFood();
+		generateFood();
 		//gameObjects.add(food);
 	}
 }
