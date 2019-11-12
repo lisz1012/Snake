@@ -5,7 +5,7 @@ import java.util.List;
 public class Snake extends GameObject {
 	private static final int INIT_X = 10;
 	private static final int INIT_Y = 10;
-	private static final int INIT_LENGTH = 3;
+	private static final int INIT_LENGTH = 23;
 	private static final Direction INIT_DIRECTION = Direction.RIGHT;
 	
 	private List<Node> nodes = new LinkedList<>();
@@ -30,27 +30,38 @@ public class Snake extends GameObject {
 	
 	@Override
 	void update(Graphics g) {
-		if (eat(snakeFrame.food)) {
+		if (hit(snakeFrame.food)) {
 			nodes.add(0, new Node(snakeFrame.food.x, snakeFrame.food.y));
 			//snakeFrame.gameObjects.remove(snakeFrame.food);
 			snakeFrame.generateFood();
+		} else if (bitesSelf()) {
+			snakeFrame.setRunning(false);
 		} else {
 			moveLastNodeToHead();
 		}
 	}
 
-	private boolean eat(Node food) {
-		if (food == null) {
+	private boolean bitesSelf() {
+		for (Node node : nodes) {
+			if (hit(node)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean hit(Node node) {
+		if (node == null) {
 			return false;
 		}
 		Node head = nodes.get(0);
-		if (dir == Direction.LEFT && (food.x == head.x - Node.SIDE_LENGTH || food.x == (SnakeFrame.WIDTH - 1) * Node.SIDE_LENGTH && head.x == 0) && food.y == head.y) {
+		if (dir == Direction.LEFT && (node.x == head.x - Node.SIDE_LENGTH || node.x == (SnakeFrame.WIDTH - 1) * Node.SIDE_LENGTH && head.x == 0) && node.y == head.y) {
 			return true;
-		} else if (dir == Direction.UP && (food.y == head.y - Node.SIDE_LENGTH || food.y == (SnakeFrame.HEIGHT - 1) * Node.SIDE_LENGTH && head.y == 0) && food.x == head.x) {
+		} else if (dir == Direction.UP && (node.y == head.y - Node.SIDE_LENGTH || node.y == (SnakeFrame.HEIGHT - 1) * Node.SIDE_LENGTH && head.y == 0) && node.x == head.x) {
 			return true;
-		} else if (dir == Direction.RIGHT && (food.x == head.x + Node.SIDE_LENGTH || food.x == 0 && head.x == (SnakeFrame.WIDTH - 1) * Node.SIDE_LENGTH) && food.y == head.y) {
+		} else if (dir == Direction.RIGHT && (node.x == head.x + Node.SIDE_LENGTH || node.x == 0 && head.x == (SnakeFrame.WIDTH - 1) * Node.SIDE_LENGTH) && node.y == head.y) {
 			return true;
-		} else if (dir == Direction.DOWN && (food.y == head.y + Node.SIDE_LENGTH || food.y == 0 && head.y == (SnakeFrame.HEIGHT - 1) * Node.SIDE_LENGTH) && food.x == head.x) {
+		} else if (dir == Direction.DOWN && (node.y == head.y + Node.SIDE_LENGTH || node.y == 0 && head.y == (SnakeFrame.HEIGHT - 1) * Node.SIDE_LENGTH) && node.x == head.x) {
 			return true;
 		}
 		return false;

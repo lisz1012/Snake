@@ -21,7 +21,16 @@ public class SnakeFrame extends Frame {
 	public List<GameObject> gameObjects = new ArrayList<>();
 	public Snake snake = new Snake(this);
 	public Node food = null;
+	private boolean running = true;
 	
+	public boolean isRunning() {
+		return running;
+	}
+
+	public void setRunning(boolean running) {
+		this.running = running;
+	}
+
 	public SnakeFrame() throws HeadlessException {
 		setSize(WIDTH * Node.SIDE_LENGTH, HEIGHT * Node.SIDE_LENGTH);
 		setResizable(false);
@@ -58,6 +67,9 @@ public class SnakeFrame extends Frame {
 		g.setColor(c);
 		
 		drawAllGameObjects(g);
+		if (!running) {
+			drawGameOver();
+		}
 	}
 	
 	private void drawAllGameObjects(Graphics g) {
@@ -73,5 +85,13 @@ public class SnakeFrame extends Frame {
 		gameObjects.add(snake);
 		generateFood();
 		//gameObjects.add(food);
+	}
+	
+	public void drawGameOver() {
+		Graphics g = getGraphics();
+		Color c = g.getColor();
+		g.setColor(Color.RED);
+		g.drawString("Game Over!", 50, 50);
+		g.setColor(c);
 	}
 }
